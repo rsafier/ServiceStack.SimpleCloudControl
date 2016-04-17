@@ -2,7 +2,7 @@
 [![NuGet version](https://badge.fury.io/nu/ServiceStack.SimpleCloudControl.svg)](https://badge.fury.io/nu/ServiceStack.SimpleCloudControl)
 ## ServiceStack.SimpleCloudControl
 
-A series of plugins for [ServiceStack](https://servicestack.net/) which enhance the functionality of `ServiceStack.Discovery.Redis` [![NuGet version](https://badge.fury.io/nu/ServiceStack.Discovery.Redis.svg)](https://badge.fury.io/nu/ServiceStack.Discovery.Redis) by provide cluster awareness to additional aspects of your ServiceStack AppHost's internal state.
+A series of plugins for [ServiceStack](https://servicestack.net/) which enhance the functionality of [`ServiceStack.Discovery.Redis`](https://github.com/rsafier/ServiceStack.Discovery.Redis) [![NuGet version](https://badge.fury.io/nu/ServiceStack.Discovery.Redis.svg)](https://badge.fury.io/nu/ServiceStack.Discovery.Redis) by providing cluster awareness to additional aspects of your ServiceStack AppHost's internal state.
 
 ### Quick Start
 ```c#
@@ -18,7 +18,7 @@ public override void Configure(Container container)
     //Should load after RSD
     Plugins.Add(new SimpleCloudControlFeature());
     Plugins.Add(new SimpleMQControlFeature());
-    Plugins.Add(new SimpleCloudControlAdminFeature());
+    Plugins.Add(new SimpleCloudControlAdminFeature()); //Only add if you wish public access to administrative services 
 }
 ```
 Setup AppHost
@@ -26,7 +26,7 @@ Setup AppHost
 Provides a shared Redis PubSub channel for all other features to communicate with the cluster. It does this by exposing a 
 `public void SendMessage(object dto)` method which allows for standard DTO to be sent to all nodes on the SCC cluster and when received run thru the standard `HostContext.AppHost.ExecuteService(requestDto)` processing loop.
 ####SimpleMQControlFeature
-Allows cluster administrator to have ability to manage real-time MQ control (stop/start) and status reporting for `IMessagingService` implemented queues. MQ services can be targeted by specific NodeId or HostName. This can be useful when having to take hosts in/out of load balancers but still need to shutdown or startup MQ services gracefully). This is done by sending a `SimpleMQControlRequest` DTO to an active SCC Admin Node.
+Allows cluster administrator to have ability to manage real-time MQ control (stop/start) and status reporting for `IMessagingService` implemented queues. MQ services can be targeted by specific NodeId or HostName. This can be useful when having to take hosts in/out of load balancers but still need to shutdown or startup MQ services gracefully). This is done by sending a `SimpleMQControlRequest` DTO to an active SCC Admin Node which will forward via PubSub to all active MQ agents.
 ####SimpleHybridCacheFeature (ICacheClientExtended implementation) - incomplete, not ported
 Uses SCC PubSub for local cache consistancy with Redis across cluster. Practical use can be found when one cannot run a local Redis instances were your Services run, but are retrieving the same nearly static lookup tables on a rapid basis (I had servers starting to hit peak bandwidths in the 500Mbit range, after switching to hybrid cache peaks rarely exceed 100Mbit, obviously this is application specific and your milage my vary)
 Because there is inhertitly some delay by shadowing, and you lose the full atomic nature of Redis, for many keys this is an acceptable trade off. For those keys which you know must remain atomic should be put into the `ExcludeKeyPatterns` collection. ---
@@ -48,4 +48,5 @@ Most SCC features will not expose their DTOs beyond `InProcess` and only receive
 
 ####Other
 Screenshot showing Node redis key when populated with additional items in `IMeta` collection
+
 ![Screen shot of test apps](images/SampleScreenshot.png)
