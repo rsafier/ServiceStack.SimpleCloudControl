@@ -42,8 +42,8 @@
       <HintPath>..\..\packages\ServiceStack.Common.4.0.55\lib\net40\ServiceStack.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ServiceStack.Discovery.Redis, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ServiceStack.Discovery.Redis.1.0.0.2\lib\net452\ServiceStack.Discovery.Redis.dll</HintPath>
+    <Reference Include="ServiceStack.Discovery.Redis, Version=1.0.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ServiceStack.Discovery.Redis.1.0.0.3\lib\net452\ServiceStack.Discovery.Redis.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="ServiceStack.Interfaces, Version=4.0.0.0, Culture=neutral, PublicKeyToken=e06fbc6124f57c43, processorArchitecture=MSIL">
