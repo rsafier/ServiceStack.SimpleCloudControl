@@ -12,7 +12,7 @@
     <tags>servicestack plugin discovery servicediscovery microservices redis simplecloudcontrol messagequeue queue</tags>
     <releaseNotes>See github project for details</releaseNotes>
     <dependencies>
-      <dependency id="ServiceStack.Discovery.Redis" version="[1.0.0.4, 1.1.0.0)" /> 
+      <dependency id="ServiceStack.Discovery.Redis" version="[1.0.0.5, 1.1.0.0)" /> 
     </dependencies>
   </metadata>
 </package>
