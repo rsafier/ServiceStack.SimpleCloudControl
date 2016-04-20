@@ -3,6 +3,7 @@ using ServiceStack.Redis;
 using ServiceStack.Text;
 using ServiceStack.Logging;
 using ServiceStack.Discovery.Redis;
+using System.Diagnostics;
 
 namespace ServiceStack.SimpleCloudControl
 {
@@ -14,19 +15,23 @@ namespace ServiceStack.SimpleCloudControl
     {
         public const string RedisServiceDiscoveryMetaKey = "SimpleCloudControl";
         public string RedisPrefix { get; set; } = "scc";
-
+        private RedisServiceDiscoveryFeature RSDFeature;
+        public Guid NodeId
+        {
+            get { return RSDFeature.NodeId; }
+        }
         private readonly ILog Log = LogManager.GetLogger(typeof(SimpleCloudControlFeature));
 
         protected IRedisPubSubServer PubSubLink { get; set; }
 
         public void Register(IAppHost appHost)
         {
-            var rsdFeature = appHost.GetPlugin<RedisServiceDiscoveryFeature>();
-            if (rsdFeature == null)
+            RSDFeature = appHost.GetPlugin<RedisServiceDiscoveryFeature>();
+            if (RSDFeature == null)
             {
                 throw new Exception("RedisServiceDiscoveryFeature registration is required for SimpleCloudControl to function.");
             }
-            rsdFeature.Config.Meta[RedisServiceDiscoveryMetaKey] = RedisPrefix;
+            RSDFeature.Config.Meta[RedisServiceDiscoveryMetaKey] = RedisPrefix;
             PubSubLink = new RedisPubSubServer(appHost.TryResolve<IRedisClientsManager>(), RedisPrefix);
             PubSubLink.OnMessage = OnMessage;
             PubSubLink.OnError = OnError;
@@ -43,6 +48,8 @@ namespace ServiceStack.SimpleCloudControl
             if (dto == null)
                 return;
             HostContext.AppHost.GetRedisClient().PublishMessage(RedisPrefix, "{0}:{1}".Fmt(dto.GetType().FullName, dto.ToJson()));
+            Debug.Print("SCC SendMessage {0}".Fmt(dto.GetType().FullName));
+
         }
 
         private void OnMessage(string channel, string msg)
@@ -50,7 +57,9 @@ namespace ServiceStack.SimpleCloudControl
             if (!msg.IsEmpty() && msg.Contains(":"))
             {
                 var data = msg.SplitOnFirst(":");
-                HostContext.AppHost.ExecuteService(JsonSerializer.DeserializeFromString(data[1], Type.GetType(data[0]))); //just push along like any other message
+                var type = Type.GetType(data[0]);
+                Debug.Print("SCC OnMessage {0}".Fmt(type.FullName));
+                HostContext.AppHost.ExecuteService(JsonSerializer.DeserializeFromString(data[1], type)); //just push along like any other message
             }
         }
 

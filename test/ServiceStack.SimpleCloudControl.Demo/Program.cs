@@ -3,6 +3,7 @@ using ServiceStack.Discovery.Redis;
 using ServiceStack.Messaging;
 using ServiceStack.Messaging.Redis;
 using ServiceStack.Redis;
+using ServiceStack.SimpleCloudControl.Caching;
 using ServiceStack.SimpleCloudControl.ExternalService;
 using ServiceStack.SimpleCloudControl.MQControl;
 using ServiceStack.Text;
@@ -40,6 +41,7 @@ namespace ServiceStack.SimpleCloudControl.Demo.ExternalService
             LoadPlugin(new RedisServiceDiscoveryFeature());
             LoadPlugin(new SimpleCloudControlFeature());
             LoadPlugin(new SimpleMQControlFeature());
+            LoadPlugin(new SimpleHybridCacheFeature());
             LoadPlugin(new SimpleCloudControlAdminFeature());
             JsConfig.DateHandler = DateHandler.ISO8601DateTime;
         }
