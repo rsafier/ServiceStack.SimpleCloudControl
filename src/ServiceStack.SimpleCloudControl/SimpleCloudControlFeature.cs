@@ -15,7 +15,7 @@ namespace ServiceStack.SimpleCloudControl
     {
         public const string RedisServiceDiscoveryMetaKey = "SimpleCloudControl";
         public string RedisPrefix { get; set; } = "scc";
-        private RedisServiceDiscoveryFeature RSDFeature;
+        public RedisServiceDiscoveryFeature RSDFeature { get; private set; }
         public Guid NodeId
         {
             get { return RSDFeature.NodeId; }
