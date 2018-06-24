@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace ServiceStack.SimpleCloudControl.Demo.ExternalService
 {
-    public class AppHost : AppHostHttpListenerSmartPoolBase
+    public class AppHost : AppHostHttpListenerPoolBase
     {
         public AppHost() : base("TestAPI", typeof(AppHost).Assembly)
         { }

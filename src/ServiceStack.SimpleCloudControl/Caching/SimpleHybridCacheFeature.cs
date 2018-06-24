@@ -94,7 +94,7 @@ namespace ServiceStack.SimpleCloudControl.Caching
         private readonly Guid NodeId = HostContext.GetPlugin<RedisServiceDiscoveryFeature>().NodeId;
         private ICacheClient RedisCache
         {
-            get { return HostContext.AppHost.GetCacheClient(); }
+            get { return HostContext.AppHost.GetCacheClient(null); }
         }
 
         /// <summary>

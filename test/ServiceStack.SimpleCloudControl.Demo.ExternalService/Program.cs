@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace ServiceStack.SimpleCloudControl.ExternalService
 {
-    public class AppHost : AppHostHttpListenerSmartPoolBase
+    public class AppHost : AppHostHttpListenerPoolBase
     {
         public AppHost() : base("TestAPI2", typeof(AppHost).Assembly)
         { }
@@ -30,9 +30,8 @@ namespace ServiceStack.SimpleCloudControl.ExternalService
         {
             container.Register<IRedisClientsManager>(new RedisManagerPool("localhost:6379", new RedisPoolConfig { MaxPoolSize = 100, }));
             var mq = new RedisMqServer(container.Resolve<IRedisClientsManager>(), 0);
-      //      mq.RegisterHandler<Test2>(HostContext.ServiceController.ExecuteMessage);
-            mq.Start();
             container.Register<IMessageService>(mq);
+            mq.Start();
             SetConfig(new HostConfig
             {
                 WebHostUrl = HostAt.Replace("*", Dns.GetHostName())

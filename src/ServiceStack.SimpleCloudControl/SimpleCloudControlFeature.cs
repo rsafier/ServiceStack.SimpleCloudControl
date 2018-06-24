@@ -36,6 +36,7 @@ namespace ServiceStack.SimpleCloudControl
             PubSubLink.OnMessage = OnMessage;
             PubSubLink.OnError = OnError;
             PubSubLink.Start();
+            appHost.OnDisposeCallbacks.Add(a => Dispose());
         }
 
         private void OnError(Exception e)
