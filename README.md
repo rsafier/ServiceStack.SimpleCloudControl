@@ -27,7 +27,7 @@ Setup AppHost
 #### SimpleCloudControlFeature (Required)
 Provides a shared Redis PubSub channel for all other features to communicate with the cluster. It does this by exposing a 
 `public void SendMessage(object dto)` method which allows for standard DTO to be sent to all nodes on the SCC cluster and when received run thru the standard `HostContext.AppHost.ExecuteService(requestDto)` processing loop.
-####SimpleMQControlFeature
+#### SimpleMQControlFeature
 Allows cluster administrator to have ability to manage real-time MQ control (stop/start) and status reporting for `IMessagingService` implemented queues. MQ services can be targeted by specific NodeId or HostName. This can be useful when having to take hosts in/out of load balancers but still need to shutdown or startup MQ services gracefully). This is done by sending a `SimpleMQControlRequest` DTO to an active SCC Admin Node which will forward via PubSub to all active MQ agents.
 #### SimpleHybridCacheFeature (ICacheClientExtended implementation) - ported, not tested
 Uses SCC PubSub for local cache consistancy with Redis across cluster. Practical use can be found when one cannot run a local Redis instances where your Services run, but are retrieving the same nearly static lookup tables on a rapid basis (I had servers starting to hit peak bandwidths in the 500Mbit range, after switching to hybrid cache peaks rarely exceed 100Mbit, obviously this is application specific and your mileage my vary)
