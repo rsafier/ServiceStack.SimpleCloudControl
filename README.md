@@ -2,6 +2,8 @@
 [![NuGet version](https://badge.fury.io/nu/ServiceStack.SimpleCloudControl.svg)](https://badge.fury.io/nu/ServiceStack.SimpleCloudControl)
 ## ServiceStack.SimpleCloudControl
 
+### NOTE: This repo is no longer maintained
+
 A series of plugins for [ServiceStack](https://servicestack.net/) which enhance the functionality of [`ServiceStack.Discovery.Redis`](https://github.com/rsafier/ServiceStack.Discovery.Redis) [![NuGet version](https://badge.fury.io/nu/ServiceStack.Discovery.Redis.svg)](https://badge.fury.io/nu/ServiceStack.Discovery.Redis) by providing cluster awareness to additional aspects of your ServiceStack AppHost's internal state.
 
 ### Quick Start
